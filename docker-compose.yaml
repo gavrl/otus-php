@@ -58,6 +58,26 @@ services:
     networks:
       - app-network
 
+  redis:
+    image: redis:latest
+    ports:
+      - "${REDIS_PORT}:6379"
+    container_name: redis
+    volumes:
+      - ./redis/data:/var/lib/redis
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    ports:
+      - "${MEMCACHED_PORT}:11211"
+    command:
+      - '--memory-limit=1024'
+    networks:
+      - app-network
+
 #Docker Networks
 networks:
   app-network:
