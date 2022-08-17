@@ -1,5 +1,3 @@
 .idea
-mysql/dbdata
-redis/data
-mysql
 .env
+vendor
