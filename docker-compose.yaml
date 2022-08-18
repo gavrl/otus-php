@@ -1,0 +1,68 @@
+version: '3.9'
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: webserver
+    ports:
+      - "${NGINX_PORT}:80"
+      - "${NGINX_PORT_SSL}:443"
+    volumes:
+      - ./app:/data/myapp.local
+    networks:
+      - app-network
+
+  app1:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+      args:
+        uname: ${APP_UNAME}
+        uid: ${APP_UID}
+        gid: ${APP_GID}
+        DOCKER_PHP_ENABLE_XDEBUG: ${DOCKER_PHP_ENABLE_XDEBUG}
+    image: balance/php
+    container_name: app1
+    volumes:
+      - ./app:/data/myapp.local
+    environment:
+      PHP_IDE_CONFIG: serverName=${XDEBUG_STORM_SERVER_NAME}
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+      args:
+        DOCKER_PHP_ENABLE_XDEBUG: ${DOCKER_PHP_ENABLE_XDEBUG}
+    image: balance/php
+    container_name: app2
+    volumes:
+      - ./app:/data/myapp.local
+    environment:
+      PHP_IDE_CONFIG: serverName=${XDEBUG_STORM_SERVER_NAME}
+    networks:
+      - app-network
+
+  app3:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+      args:
+        DOCKER_PHP_ENABLE_XDEBUG: ${DOCKER_PHP_ENABLE_XDEBUG}
+    image: balance/php
+    container_name: app3
+    volumes:
+      - ./app:/data/myapp.local
+    environment:
+      PHP_IDE_CONFIG: serverName=${XDEBUG_STORM_SERVER_NAME}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
