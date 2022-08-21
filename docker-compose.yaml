@@ -84,7 +84,10 @@ services:
     image: myapp/repcached
     container_name: memcached1
     tty: true
-    entrypoint: ["memcached", "-u", "root", "-v", "-p", "11211", "-U", "11211", "-x", "memcached2", "-P", "/var/run/memcachedrep.pid", "-c", "1024", "-m", "64", "-t", "4"]
+    environment:
+      MEMCACHED_SLAVE_IP: memcached2
+    depends_on:
+      - memcached2
     ports:
       - "11211:11211"
     networks:
@@ -97,7 +100,6 @@ services:
     image: myapp/repcached
     container_name: memcached2
     tty: true
-    entrypoint: ["memcached", "-u", "root", "-v", "-p", "11211", "-U", "11211", "-x", "memcached1", "-P", "/var/run/memcachedrep.pid", "-c", "1024", "-m", "64", "-t", "4"]
     ports:
       - "11212:11211"
     networks:
