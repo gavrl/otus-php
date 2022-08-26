@@ -2,7 +2,7 @@ FROM nginx:latest
 
 COPY hosts/default.conf /etc/nginx/conf.d/default.conf
 
-WORKDIR /data/myapp.local
+WORKDIR /data/email-app
 
 EXPOSE 80 443
 

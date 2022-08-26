@@ -5,6 +5,8 @@ ARG uname
 ARG gid
 ARG uid
 
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
 # ставим необходимые для нормальной работы модули
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
@@ -12,16 +14,14 @@ RUN apt-get update && apt-get install -y \
 	libpng-dev \
 	libonig-dev \
 	libzip-dev \
+	libicu-dev \
 	libmemcached-dev \
 	libmcrypt-dev \
-      && pecl install mcrypt-1.0.5 \
-      && pecl install apcu \
-	  && docker-php-ext-enable mcrypt \
-      && docker-php-ext-install -j$(nproc) iconv mbstring mysqli pdo_mysql zip \
+      && pecl install mcrypt-1.0.5 apcu memcached \
+      && docker-php-ext-install -j$(nproc) iconv mbstring mysqli pdo_mysql zip gd intl \
 	  && docker-php-ext-configure gd --with-freetype --with-jpeg \
-      && docker-php-ext-install -j$(nproc) gd \
-      && pecl install memcached && \
-         docker-php-ext-enable memcached apcu
+      && docker-php-ext-enable mcrypt memcached apcu intl
+RUN docker-php-ext-configure intl
 
 COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
@@ -45,7 +45,7 @@ RUN useradd -G www-data,root -s /bin/bash --uid $uid --gid $gid $uname
 RUN mkdir -p /home/$uname/.composer && \
     chown -R $uname:$uname /home/$uname
 
-WORKDIR /data/myapp.local
+WORKDIR /data/email-app
 
 CMD composer i -o ;  php-fpm
 
