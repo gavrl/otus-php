@@ -15,7 +15,7 @@ services:
     volumes:
       - ./app:/data/socket-chat
       - socket-volume:/tmp/sockets
-#    entrypoint: ["php", "app.php", "server"]
+    entrypoint: ["php", "app.php", "server"]
     environment:
       PHP_IDE_CONFIG: serverName=${XDEBUG_STORM_SERVER_NAME}
     networks:
@@ -37,7 +37,7 @@ services:
     volumes:
       - ./app:/data/socket-chat
       - socket-volume:/tmp/sockets
-#    entrypoint: ["php", "app.php", "client"]
+    entrypoint: ["php", "app.php", "client"]
     environment:
       PHP_IDE_CONFIG: serverName=${XDEBUG_STORM_SERVER_NAME}
     networks:
