@@ -45,7 +45,7 @@ RUN useradd -G www-data,root -s /bin/bash --uid $uid --gid $gid $uname
 RUN mkdir -p /home/$uname/.composer && \
     chown -R $uname:$uname /home/$uname
 
-WORKDIR /data/email-app
+WORKDIR /data/bookshop-app
 
 CMD composer i -o ;  php-fpm
 

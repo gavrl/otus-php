@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Gavrl\BookshopElastic;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
